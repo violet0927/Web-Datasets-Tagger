@@ -1026,8 +1026,8 @@
         const NL_TAGGER_MODEL_NAME_STORAGE_KEY = 'nlTaggerModelName_v1_3_3';
         const BASE_VLM_SYSTEM_INSTRUCTION = `Please provide a detailed and engaging caption for the image. Describe the scene, characters (if any, including their appearance, attire, actions, and expressions), objects, setting, and overall mood. The caption should be suitable for general audiences and provide a comprehensive understanding of the image content. Focus on factual and visual elements.`;
         const BASE_VLM_SYSTEM_INSTRUCTION_ROLE_TEMPLATE = `Focusing on the character(s) identified as '{ROLE_NAME}', please provide a detailed and engaging caption for the image. Describe the scene, these character(s) (including their appearance, attire, actions, and expressions), other objects, setting, and overall mood. The caption should be suitable for general audiences and provide a comprehensive understanding of the image content, with special attention to the specified character(s). Focus on factual and visual elements.`;
-        const NL_API_MAX_RETRIES = 2; // Max 2 retries (total 3 attempts)
-        const NL_API_RETRY_DELAY = 1500; // 1.5 seconds delay
+        const NL_API_MAX_RETRIES = 2;
+        const NL_API_RETRY_DELAY = 1500;
 
         const appState = {
             ortSession: null,
@@ -1046,7 +1046,7 @@
             nlApiUrl: '',
             nlApiKey: '',
             nlApiModelName: 'gemini-2.5-pro-preview-05-06',
-            isNLApiWarmedUp: false, // Flag to track warm-up status
+            isNLApiWarmedUp: false,
         };
 
         const PREDEFINED_MODELS = [
@@ -1985,17 +1985,17 @@
                         method: 'OPTIONS',
                         headers: {
                             'Authorization': `Bearer ${appState.nlApiKey}`,
-                            'Content-Type': 'application/json', // Often needed for OPTIONS preflight
+                            'Content-Type': 'application/json',
                         }
                     });
-                    if (response.ok || response.status === 204 || response.status === 405) { // 204 No Content, 405 Method Not Allowed are also acceptable for OPTIONS
+                    if (response.ok || response.status === 204 || response.status === 405) {
                         console.log("NL API warm-up OPTIONS request successful, status:", response.status);
                         showToast("NL API 接口探测成功。", "success", 2000);
                         appState.isNLApiWarmedUp = true;
                     } else {
                         console.warn("NL API warm-up OPTIONS request failed with status:", response.status, await response.text());
                         showToast(`NL API 接口探测失败 (状态: ${response.status})。请检查API设置和网络。`, "warning", 4000);
-                        appState.isNLApiWarmedUp = false; // Explicitly set to false on failure
+                        appState.isNLApiWarmedUp = false;
                     }
                 } catch (error) {
                     console.warn("NL API warm-up OPTIONS request failed:", error.message);
@@ -2028,7 +2028,7 @@
             document.getElementById('nlTaggerModelInfoSpan').textContent = `使用模型: ${appState.nlApiModelName}`;
 
             if (appState.nlApiUrl && appState.nlApiKey && appState.nlApiModelName) {
-                 warmUpNLApi(); // Attempt warm-up if all settings are loaded
+                 warmUpNLApi();
             }
         }
 
@@ -2039,7 +2039,7 @@
             document.getElementById('nlApiUrl').addEventListener('input', (event) => {
                 appState.nlApiUrl = event.target.value.trim();
                 localStorage.setItem(NL_TAGGER_API_URL_STORAGE_KEY, appState.nlApiUrl);
-                appState.isNLApiWarmedUp = false; // Reset warm-up status on change
+                appState.isNLApiWarmedUp = false;
                 checkRunButtonState();
                 warmUpNLApi();
             });
@@ -2383,7 +2383,7 @@
 
         async function initializeApp() {
             _setupUIElementsAndChecks();
-            _loadNLTaggerSettings(); // This will also attempt warm-up if params are present
+            _loadNLTaggerSettings();
             try {
                 await _initializeONNXRuntime();
             } catch (e) {
@@ -2395,8 +2395,7 @@
             _populatePredefinedModelsSelect();
             await _initializeDB();
             _attachEventListeners();
-            _setInitialUIState(); // This calls handleTaggerEngineChange which might call warmUpNLApi again if NL is default and params exist.
-                                 // The isNLApiWarmedUp flag should prevent redundant actual calls.
+            _setInitialUIState();
         }
 
         let isCurrentlyProcessing = false;
@@ -2422,7 +2421,6 @@
                     showToast("请完整填写 NL Captions 的 API URL、API Key 和模型名称。", "warning");
                     updateStatus("请完整填写 NL Captions 的 API 参数。", false);
                 } else if (!appState.isNLApiWarmedUp) {
-                    // If not warmed up, try one more time before starting batch processing
                     await warmUpNLApi();
                     if (!appState.isNLApiWarmedUp) {
                          showToast("NL API 接口探测失败。请检查设置和网络。处理可能失败。", "warning", 5000);
@@ -2619,7 +2617,7 @@
                 const imageFile = imageInfo.file;
                 let cardElement;
                 let nlTaggerResponseText = "NL Captions API 未返回有效文本。";
-                let fullNLApiResponseForSaving = { error: { message: nlTaggerResponseText } }; // Default error structure
+                let fullNLApiResponseForSaving = { error: { message: nlTaggerResponseText } };
                 let requestSucceeded = false;
 
                 updateStatus(`(NL Captions) 正在处理 ${i + 1} / ${dataSource.length}: ${imageInfo.name}`, true);
@@ -2667,31 +2665,30 @@
                             try {
                                 const errorBodyJson = JSON.parse(errorBodyText);
                                 errorMessage = `API 请求失败 (${response.status}): ${errorBodyJson.error?.message || errorBodyJson.detail || response.statusText}`;
-                            } catch (e) { /* Keep original errorMessage if parsing fails */ }
+                            } catch (e) { }
                             console.error('NL Captions API Error Response Text:', errorBodyText);
-                            throw new Error(errorMessage); // This will be caught by the outer catch for retry
+                            throw new Error(errorMessage);
                         }
 
                         const result = await response.json();
-                        fullNLApiResponseForSaving = result; // Store full response
+                        fullNLApiResponseForSaving = result;
 
                         if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content && result.choices[0].message.content.trim() !== "") {
                             nlTaggerResponseText = result.choices[0].message.content.trim();
                             requestSucceeded = true;
-                            break; // Success, exit retry loop
+                            break;
                         } else {
                             let specificError = "API响应中未找到有效的描述文本。";
                             if (result.error && result.error.message) {
                                 specificError = `API 错误: ${result.error.message}`;
                             }
                             console.warn("NL Captions API 响应结构意外或内容为空:", result);
-                            nlTaggerResponseText = specificError; // Keep this for the current attempt's card
+                            nlTaggerResponseText = specificError;
                             fullNLApiResponseForSaving = { error: { message: specificError, details: result } };
                             if (attempt < NL_API_MAX_RETRIES) {
                                 await new Promise(resolve => setTimeout(resolve, NL_API_RETRY_DELAY));
-                                continue; // Go to next retry attempt
+                                continue;
                             }
-                            // If all retries failed due to empty content
                             throw new Error(specificError);
                         }
 
@@ -2703,19 +2700,18 @@
                         if (attempt < NL_API_MAX_RETRIES) {
                             await new Promise(resolve => setTimeout(resolve, NL_API_RETRY_DELAY));
                         } else {
-                            // All retries failed, create error card with the last error
                             showToast(`(NL Captions) 处理图像 "${imageInfo.name}" 多次尝试后仍然失败: ${error.message}`, 'error', 7000);
-                            cardElement = _createErrorCard(imageInfo, new Error(nlTaggerResponseText), TAGGER_ENGINE_NL); // Use the accumulated error message
+                            cardElement = _createErrorCard(imageInfo, new Error(nlTaggerResponseText), TAGGER_ENGINE_NL);
                             appState.allProcessedResults.push({
                                 file: imageFile, name: imageInfo.name, originalName: imageInfo.name, relativePath: imageInfo.relativePath,
                                 tagsString: nlTaggerResponseText,
                                 nlTaggerResponse: fullNLApiResponseForSaving,
-                                dataUrl: null, // Assuming dataUrl might not be available or relevant on final error
+                                dataUrl: null,
                                 cardElement: cardElement, parentDirectoryHandle: imageInfo.parentDirectoryHandle
                             });
                         }
                     }
-                } // End of retry loop
+                }
 
                 if (requestSucceeded) {
                     let saveStatusMessage = '';
@@ -2737,7 +2733,7 @@
                         }
                     }
                     cardElement = _createNLTaggerResultCard(
-                        { name: imageInfo.name, dataUrl: await preprocessImageWithWorker(imageFile, null, TAGGER_ENGINE_NL).then(d => d.dataUrl).catch(() => null) }, // Re-fetch dataUrl for card if needed
+                        { name: imageInfo.name, dataUrl: await preprocessImageWithWorker(imageFile, null, TAGGER_ENGINE_NL).then(d => d.dataUrl).catch(() => null) },
                         nlTaggerResponseText,
                         fullNLApiResponseForSaving,
                         isBatchModeForProcessing,
@@ -2748,16 +2744,12 @@
                         file: imageFile, name: imageInfo.name, originalName: imageInfo.name, relativePath: imageInfo.relativePath,
                         tagsString: nlTaggerResponseText,
                         nlTaggerResponse: fullNLApiResponseForSaving,
-                        dataUrl: await preprocessImageWithWorker(imageFile, null, TAGGER_ENGINE_NL).then(d => d.dataUrl).catch(() => null), // Ensure dataUrl is consistent
+                        dataUrl: await preprocessImageWithWorker(imageFile, null, TAGGER_ENGINE_NL).then(d => d.dataUrl).catch(() => null),
                         cardElement: cardElement, parentDirectoryHandle: imageInfo.parentDirectoryHandle
                     });
                 }
-                // If cardElement was created due to error in retry loop, it's already pushed.
-                // If it was successful, it's pushed above.
-                // If cardElement is still undefined (e.g. error before card creation in loop), create a generic error card.
                 if (!cardElement) {
                      cardElement = _createErrorCard(imageInfo, new Error(nlTaggerResponseText || "未知处理错误"), TAGGER_ENGINE_NL);
-                     // Ensure result is pushed if not already by retry loop's error handling
                      if (!appState.allProcessedResults.find(r => r.originalName === imageInfo.name)) {
                         appState.allProcessedResults.push({
                             file: imageFile, name: imageInfo.name, originalName: imageInfo.name, relativePath: imageInfo.relativePath,
@@ -2771,8 +2763,8 @@
 
 
                 resultsContainer.appendChild(cardElement);
-                await new Promise(resolve => setTimeout(resolve, 50)); // UI update stagger
-            } // End of for loop over dataSource
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
 
             updateMainProgress(dataSource.length, dataSource.length);
             updateStatus(`✨ (NL Captions) 处理完成: ${dataSource.length} 个图像。`, false);
@@ -2845,7 +2837,7 @@
             cardElement.className = 'glass-card rounded-2xl p-6 flex flex-col space-y-4 card-appear border-2 border-blue-200';
 
             const imgPreview = document.createElement('img');
-            imgPreview.src = imageInfo.dataUrl || 'placeholder.png'; // Fallback if dataUrl is null
+            imgPreview.src = imageInfo.dataUrl || 'placeholder.png';
             imgPreview.alt = imageInfo.name;
             imgPreview.className = 'w-full h-48 object-contain rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200';
             cardElement.appendChild(imgPreview);
@@ -2869,13 +2861,13 @@
                 const captionTitle = document.createElement('h5');
                 captionTitle.className = 'text-sm font-semibold mt-2';
                 captionTitle.textContent = captionIsError ? '错误信息:' : 'NL Captions 描述:';
-                captionTitle.style.color = captionIsError ? '#ef4444' : '#374151'; // Red for error, default for normal
+                captionTitle.style.color = captionIsError ? '#ef4444' : '#374151';
                 cardElement.appendChild(captionTitle);
 
                 const captionBlock = document.createElement('p');
                 captionBlock.className = 'text-sm leading-relaxed p-3 rounded-md';
                 captionBlock.textContent = mainCaptionText;
-                captionBlock.style.backgroundColor = captionIsError ? 'rgba(254, 226, 226, 0.8)' : 'rgba(243, 244, 246, 0.8)'; // Light red or light gray
+                captionBlock.style.backgroundColor = captionIsError ? 'rgba(254, 226, 226, 0.8)' : 'rgba(243, 244, 246, 0.8)';
                 captionBlock.style.color = captionIsError ? '#c00' : '#374151';
                 cardElement.appendChild(captionBlock);
 
@@ -2950,7 +2942,7 @@
 
         function handleTaggerEngineChange() {
             appState.currentTaggerEngine = document.getElementById('taggerEngineSelect').value;
-            appState.isNLApiWarmedUp = false; // Reset warm-up status on engine change
+            appState.isNLApiWarmedUp = false;
 
             const booruTaggerSettings = document.getElementById('booruTaggerSettings');
             const nlTaggerApiSettings = document.getElementById('nlTaggerApiSettings');
@@ -2960,7 +2952,7 @@
             const booruTaggerTriggerWordSettings = document.getElementById('booruTaggerTriggerWordSettings');
             const booruTaggerEscapeParenthesesSettings = document.getElementById('booruTaggerEscapeParenthesesSettings');
             const nlTaggerModelInfoSpan = document.getElementById('nlTaggerModelInfoSpan');
-            const batchModeDescription = document.querySelector('.glass-card.rounded-3xl.p-6.md\\:p-8.text-center.file-upload-area p.text-sm.text-gray-500.mb-6:last-of-type');
+            const batchModeDescriptionParagraph = document.querySelector('div.glass-card.rounded-3xl.p-6.md\\:p-8.text-center.file-upload-area:not(#singleImageUploadArea) p.text-sm.text-gray-500.mb-6');
 
 
             if (appState.currentTaggerEngine === TAGGER_ENGINE_BOORU) {
@@ -2972,7 +2964,7 @@
                 booruTaggerTriggerWordSettings.classList.remove('hidden');
                 booruTaggerEscapeParenthesesSettings.classList.remove('hidden');
                 nlTaggerModelInfoSpan.textContent = '';
-                if (batchModeDescription) batchModeDescription.textContent = '自动处理文件夹内所有图片，并将标签文件 (.txt) 保存至原位置。';
+                if (batchModeDescriptionParagraph) batchModeDescriptionParagraph.textContent = '自动处理文件夹内所有图片，并将标签文件 (.txt) 保存至原位置。';
 
 
                 handleBooruTaggerModelSourceChange();
@@ -2984,12 +2976,12 @@
                 nlTaggerRolePromptGroup.classList.remove('hidden');
                 booruTaggerTriggerWordSettings.classList.add('hidden');
                 booruTaggerEscapeParenthesesSettings.classList.add('hidden');
-                if (batchModeDescription) batchModeDescription.textContent = '自动处理文件夹内所有图片，并将描述文本文件 (.txt) 保存至原位置。';
+                if (batchModeDescriptionParagraph) batchModeDescriptionParagraph.textContent = '自动处理文件夹内所有图片，并将描述文本文件 (.txt) 保存至原位置。';
 
 
                 resetLoadedBooruTaggerState();
                 nlTaggerModelInfoSpan.textContent = `使用模型: ${appState.nlApiModelName || '未指定'}`;
-                warmUpNLApi(); // Attempt warm-up when switching to NL mode
+                warmUpNLApi();
             }
             document.getElementById('results-container').innerHTML = '';
             appState.allProcessedResults = [];
@@ -3011,11 +3003,10 @@
                 for (const result of resultsToZip) {
                     if (result.originalName) {
                         let fileName, fileContent;
-                        // For NL Captions, always save as .txt with the caption text, similar to batch mode
                         if (appState.currentTaggerEngine === TAGGER_ENGINE_NL) {
                             fileName = result.originalName.replace(/\.[^/.]+$/, "") + '.txt';
-                            fileContent = result.tagsString; // tagsString holds the caption for NL
-                        } else { // Booru tags
+                            fileContent = result.tagsString;
+                        } else {
                             fileName = result.originalName.replace(/\.[^/.]+$/, "") + '.txt';
                             fileContent = result.tagsString;
                         }
