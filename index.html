@@ -10,16 +10,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --vlm-api-gradient: linear-gradient(135deg, #4A90E2 0%, #50E3C2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.18);
+            --forget-me-not-blue: #5B9BD5;
+            --forget-me-not-light: #7CB5E3;
+            --forget-me-not-dark: #4A8BC2;
+            --forget-me-not-pale: #E6F2FF;
+            --forget-me-not-soft: #B8D4F1;
+            
+            --primary-gradient: linear-gradient(135deg, #5B9BD5 0%, #7CB5E3 100%);
+            --secondary-gradient: linear-gradient(135deg, #4A8BC2 0%, #5B9BD5 100%);
+            --success-gradient: linear-gradient(135deg, #5B9BD5 0%, #87CEEB 100%);
+            --vlm-api-gradient: linear-gradient(135deg, #4A8BC2 0%, #6BA6E5 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(91, 155, 213, 0.2);
         }
         body {
             font-family: 'Inter', 'Noto Sans SC', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #F0F7FF 0%, #E6F2FF 50%, #F5F9FF 100%);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -31,33 +37,33 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 45%),
-                        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.08) 0%, transparent 45%),
-                        radial-gradient(circle at 20% 80%, rgba(240, 147, 251, 0.08) 0%, transparent 45%);
-            animation: backgroundFloat 25s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(91, 155, 213, 0.06) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 20%, rgba(124, 181, 227, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(184, 212, 241, 0.08) 0%, transparent 40%);
+            animation: backgroundFloat 30s ease-in-out infinite;
             z-index: -1;
         }
         @keyframes backgroundFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
-            33% { transform: translate(35px, -35px) rotate(130deg); opacity: 1; }
-            66% { transform: translate(-25px, 25px) rotate(250deg); opacity: 0.8; }
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
+            33% { transform: translate(30px, -30px) rotate(120deg); opacity: 0.8; }
+            66% { transform: translate(-20px, 20px) rotate(240deg); opacity: 0.7; }
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(91, 155, 213, 0.1);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.18);
-            background: rgba(255, 255, 255, 0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(91, 155, 213, 0.15);
+            border-color: rgba(91, 155, 213, 0.3);
         }
         .sidebar {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.75) 100%);
-            backdrop-filter: blur(18px);
-            border-right: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(91, 155, 213, 0.2);
             position: relative;
         }
         .sidebar::before {
@@ -66,8 +72,8 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 120px;
-            background: linear-gradient(180deg, rgba(102, 126, 234, 0.12) 0%, transparent 100%);
+            height: 150px;
+            background: linear-gradient(180deg, var(--forget-me-not-pale) 0%, transparent 100%);
             pointer-events: none;
         }
         .main-title {
@@ -76,12 +82,12 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 800;
-            text-shadow: 0 0 35px rgba(102, 126, 234, 0.35);
-            animation: titleGlow 3.5s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(91, 155, 213, 0.3);
+            animation: titleGlow 4s ease-in-out infinite alternate;
         }
         @keyframes titleGlow {
             0% { filter: brightness(1) saturate(1); }
-            100% { filter: brightness(1.15) saturate(1.2); }
+            100% { filter: brightness(1.1) saturate(1.15); }
         }
         .btn-primary, .btn-vlm-api {
             color: white;
@@ -92,11 +98,11 @@
         }
         .btn-primary {
             background: var(--primary-gradient);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(91, 155, 213, 0.35);
         }
          .btn-vlm-api {
             background: var(--vlm-api-gradient);
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.35);
+            box-shadow: 0 4px 15px rgba(74, 139, 194, 0.35);
         }
         .btn-primary::before, .btn-vlm-api::before {
             content: '';
@@ -105,7 +111,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0.5s;
         }
         .btn-primary:hover::before, .btn-vlm-api:hover::before {
@@ -113,27 +119,27 @@
         }
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(91, 155, 213, 0.45);
         }
          .btn-vlm-api:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.45);
+            box-shadow: 0 8px 25px rgba(74, 139, 194, 0.45);
         }
         .btn-primary:active, .btn-vlm-api:active {
             transform: translateY(0);
         }
         .btn-success {
-            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            background: linear-gradient(135deg, #5B9BD5 0%, #87CEEB 100%);
             color: white;
             border: none;
             position: relative;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 4px 15px rgba(91, 155, 213, 0.3);
         }
         .btn-success:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 8px 25px rgba(135, 206, 235, 0.4);
         }
         .btn-secondary {
             background: var(--success-gradient);
@@ -141,39 +147,39 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(135, 206, 235, 0.3);
         }
         .btn-secondary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 8px 25px rgba(135, 206, 235, 0.4);
         }
         .btn-danger {
-            background: var(--secondary-gradient);
+            background: linear-gradient(135deg, #FFB6C1 0%, #FFA07A 100%);
             color: white;
             position: relative;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
         }
         .btn-danger:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.4);
         }
         .btn-outline {
-            background: rgba(255, 255, 255, 0.8);
-            color: #667eea;
-            border: 2px solid rgba(102, 126, 234, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--forget-me-not-blue);
+            border: 2px solid rgba(91, 155, 213, 0.3);
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-outline:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
+            background: var(--forget-me-not-pale);
+            border-color: var(--forget-me-not-blue);
             transform: translateY(-1px);
         }
         .input-field, select, input[type="password"], input[type="text"] {
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(91, 155, 213, 0.2);
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0.65rem 1rem;
@@ -181,23 +187,23 @@
         }
         .input-field:focus, select:focus, input[type="password"]:focus, input[type="text"]:focus {
             background: rgba(255, 255, 255, 0.95);
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: var(--forget-me-not-blue);
+            box-shadow: 0 0 0 4px rgba(91, 155, 213, 0.1);
             transform: translateY(-1px);
             outline: none;
         }
         .input-field-subtle-accent {
-            background: rgba(249, 250, 251, 0.9);
-            border: 1px solid rgba(229, 231, 235, 0.7);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(91, 155, 213, 0.15);
         }
         .input-field-subtle-accent:focus {
-            background: rgba(252, 253, 255, 0.95);
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 1);
+            border-color: var(--forget-me-not-blue);
+            box-shadow: 0 0 0 4px rgba(91, 155, 213, 0.1);
         }
         input[type="file"].input-field-file {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(91, 155, 213, 0.2);
             color: #4a5568;
             padding: 0.5rem 0.75rem;
             border-radius: 0.75rem;
@@ -206,8 +212,8 @@
             width: 100%;
         }
         input[type="file"].input-field-file::file-selector-button {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-            color: #667eea;
+            background: linear-gradient(135deg, var(--forget-me-not-pale), var(--forget-me-not-soft));
+            color: var(--forget-me-not-dark);
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
@@ -217,11 +223,11 @@
             transition: all 0.2s ease-in-out;
         }
         input[type="file"].input-field-file::file-selector-button:hover {
-            background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+            background: linear-gradient(135deg, var(--forget-me-not-soft), var(--forget-me-not-light));
             transform: translateY(-1px);
         }
         input[type="file"].input-field-file:hover {
-            border-color: rgba(102, 126, 234, 0.4);
+            border-color: rgba(91, 155, 213, 0.4);
         }
         .switch {
             position: relative;
@@ -257,14 +263,14 @@
             background: white;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         input:checked + .slider {
             background: var(--primary-gradient);
         }
         input:checked + .slider:before {
             transform: translateX(22px);
-            box-shadow: 0 2px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 12px rgba(91, 155, 213, 0.3);
         }
         input[type="range"] {
             -webkit-appearance: none;
@@ -285,12 +291,12 @@
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid white;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 10px rgba(91, 155, 213, 0.3);
             transition: all 0.3s ease;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(91, 155, 213, 0.4);
         }
         .progress-bar-background {
             width: 100%;
@@ -338,7 +344,7 @@
             100% { background-position: 20px 0; }
         }
         .progress-bar-fill.error {
-            background: var(--secondary-gradient) !important;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FFA07A 100%) !important;
         }
         .progress-bar-fill.success {
             background: var(--success-gradient) !important;
@@ -351,24 +357,24 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
         }
         .tab-button:hover {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             transform: translateY(-1px);
         }
         .tab-button.active {
             background: var(--primary-gradient);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(91, 155, 213, 0.3);
         }
         .toast {
             padding: 1rem 1.5rem;
             border-radius: 16px;
             color: white;
             font-size: 0.9rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             opacity: 0;
             transform: translateX(100%) scale(0.8);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -383,31 +389,31 @@
             transform: translateX(0) scale(1);
         }
         .toast.info {
-            background: rgba(59, 130, 246, 0.9);
+            background: rgba(91, 155, 213, 0.95);
         }
         .toast.success {
-            background: rgba(16, 185, 129, 0.9);
+            background: rgba(135, 206, 235, 0.95);
         }
         .toast.error {
-            background: rgba(239, 68, 68, 0.9);
+            background: rgba(255, 182, 193, 0.95);
         }
         .toast.warning {
-            background: rgba(245, 158, 11, 0.9);
+            background: rgba(255, 223, 186, 0.95);
             color: #1f2937;
         }
         .spinner {
             width: 24px;
             height: 24px;
-            border: 3px solid rgba(102, 126, 234, 0.2);
-            border-top-color: #667eea;
+            border: 3px solid rgba(91, 155, 213, 0.2);
+            border-top-color: var(--forget-me-not-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         .spinner.vlm-api {
-            border-top-color: #4A90E2;
-            border-right-color: #50E3C2;
-            border-bottom-color: #F5A623;
-            border-left-color: #BD10E0;
+            border-top-color: var(--forget-me-not-dark);
+            border-right-color: var(--forget-me-not-light);
+            border-bottom-color: var(--forget-me-not-blue);
+            border-left-color: var(--forget-me-not-soft);
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
@@ -446,25 +452,25 @@
             }
         }
         .help-tab-button.active {
-            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-            color: #667eea;
+            background: linear-gradient(135deg, var(--forget-me-not-pale), var(--forget-me-not-soft));
+            color: var(--forget-me-not-dark);
             font-weight: 600;
             transform: translateX(4px);
         }
         .file-upload-area {
-            border: 2px dashed rgba(102, 126, 234, 0.3);
-            background: rgba(255, 255, 255, 0.5);
+            border: 2px dashed rgba(91, 155, 213, 0.3);
+            background: rgba(255, 255, 255, 0.7);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .file-upload-area:hover, .file-upload-area.dragover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.08);
+            border-color: var(--forget-me-not-blue);
+            background: var(--forget-me-not-pale);
             transform: translateY(-2px);
         }
         .tag-pill {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, rgba(91, 155, 213, 0.1), rgba(124, 181, 227, 0.1));
+            color: var(--forget-me-not-dark);
+            border: 1px solid rgba(91, 155, 213, 0.2);
             animation-name: tagPop;
             animation-duration: 0.4s;
             animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -473,16 +479,16 @@
             transition: background 0.3s ease, transform 0.3s ease;
         }
         .tag-pill:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            background: linear-gradient(135deg, rgba(91, 155, 213, 0.2), rgba(124, 181, 227, 0.2));
             transform: translateY(-1px);
         }
         .tag-pill-api {
-            background: linear-gradient(135deg, #E0F2FE, #bae6fd);
-            color: #0c4a6e;
-            border: 1px solid #7dd3fc;
+            background: linear-gradient(135deg, #E6F2FF, #D1E7FF);
+            color: var(--forget-me-not-dark);
+            border: 1px solid var(--forget-me-not-soft);
         }
         .tag-pill-api:hover {
-            background: linear-gradient(135deg, #bae6fd, #7dd3fc);
+            background: linear-gradient(135deg, #D1E7FF, #B8D4F1);
             transform: translateY(-1px);
         }
         @keyframes tagPop {
@@ -504,13 +510,13 @@
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5));
+            background: linear-gradient(135deg, rgba(91, 155, 213, 0.5), rgba(124, 181, 227, 0.5));
             border-radius: 10px;
             border: 2px solid transparent;
             background-clip: content-box;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(118, 75, 162, 0.7));
+            background: linear-gradient(135deg, rgba(91, 155, 213, 0.7), rgba(124, 181, 227, 0.7));
             background-clip: content-box;
         }
         @media (max-width: 1024px) {
@@ -528,7 +534,7 @@
                 max-height: 50vh;
                 overflow-y: auto;
                 border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+                border-bottom: 1px solid rgba(91, 155, 213, 0.2);
             }
             .main-content {
                 width: 100%;
@@ -560,10 +566,27 @@
             outline: none;
         }
         ::selection {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba(91, 155, 213, 0.25);
         }
         .hidden {
             display: none !important;
+        }
+        /* 额外的装饰性元素 */
+        .decoration-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .glass-button-icon {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(91, 155, 213, 0.1);
         }
     </style>
 </head>
@@ -586,7 +609,7 @@
 
             <div class="glass-card rounded-2xl p-6 space-y-4">
                 <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                    <div class="w-2 h-2 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full mr-3"></div>
+                    <div class="decoration-dot mr-3"></div>
                     标签模式
                 </h2>
                 <div>
@@ -600,7 +623,7 @@
 
             <div id="booruTaggerSettings" class="glass-card rounded-2xl p-6 space-y-4">
                 <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                    <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3"></div>
+                    <div class="decoration-dot mr-3"></div>
                     Booru Tags 模型来源
                 </h2>
                 <div class="flex space-x-2">
@@ -659,7 +682,7 @@
 
             <div id="nlTaggerApiSettings" class="glass-card rounded-2xl p-6 space-y-4 hidden">
                 <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                    <div class="w-2 h-2 rounded-full mr-3" style="background: var(--vlm-api-gradient);"></div>
+                    <div class="decoration-dot mr-3"></div>
                     NL Captions API 设置
                 </h2>
                 <div>
@@ -685,7 +708,7 @@
 
             <div id="booruTaggerGlobalParamsSettings" class="glass-card rounded-2xl p-6 space-y-4">
                 <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                    <div class="w-2 h-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mr-3"></div>
+                    <div class="decoration-dot mr-3"></div>
                     Booru Tags 全局参数
                 </h2>
                 <div class="space-y-5">
@@ -713,7 +736,7 @@
 
             <div id="advancedOutputSettings" class="glass-card rounded-2xl p-6 space-y-4">
                 <h2 class="text-lg font-semibold text-gray-700 flex items-center">
-                    <div class="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mr-3"></div>
+                    <div class="decoration-dot mr-3"></div>
                     高级输出设置
                 </h2>
                 <div class="space-y-4">
@@ -760,8 +783,8 @@
                     <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">选择操作模式</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         <div id="singleImageUploadArea" class="glass-card rounded-3xl p-6 md:p-8 text-center file-upload-area card-appear">
-                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <div class="glass-button-icon w-16 h-16 mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--forget-me-not-blue);" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                                 </svg>
                             </div>
@@ -772,8 +795,8 @@
                             <div class="text-sm text-gray-500 mt-3" id="imageFilesInfo">未选择图像</div>
                         </div>
                         <div class="glass-card rounded-3xl p-6 md:p-8 text-center file-upload-area card-appear" style="animation-delay: 0.1s;">
-                            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <div class="glass-button-icon w-16 h-16 mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: var(--forget-me-not-blue);" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                                 </svg>
                             </div>
@@ -821,7 +844,7 @@
 
     <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center hidden z-50 p-4 sm:p-0">
         <div class="relative glass-card rounded-3xl shadow-2xl w-full max-w-4xl mx-auto my-8" style="max-height: 90vh;">
-            <div class="flex justify-between items-center border-b border-white border-opacity-20 p-6 sticky top-0 backdrop-blur-sm z-10 rounded-t-3xl">
+            <div class="flex justify-between items-center border-b border-opacity-20 p-6 sticky top-0 backdrop-blur-sm z-10 rounded-t-3xl" style="border-color: var(--glass-border);">
                 <h3 class="text-2xl font-bold text-gray-800">帮助与关于</h3>
                 <button id="closeHelpModalButton" class="text-gray-400 hover:text-gray-600 rounded-full p-2 hover:bg-white hover:bg-opacity-20 transition-all duration-200">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -831,7 +854,7 @@
             </div>
 
             <div class="flex flex-col md:flex-row" style="height: calc(90vh - 80px);">
-                <nav class="w-full md:w-1/4 border-b md:border-b-0 md:border-r border-white border-opacity-20 p-6 space-y-2 overflow-y-auto">
+                <nav class="w-full md:w-1/4 border-b md:border-b-0 md:border-r border-opacity-20 p-6 space-y-2 overflow-y-auto" style="border-color: var(--glass-border);">
                     <a href="#" data-tab="intro" class="help-tab-button block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-white hover:bg-opacity-30 transition-all duration-200 active">简介</a>
                     <a href="#" data-tab="quick-start" class="help-tab-button block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-white hover:bg-opacity-30 transition-all duration-200">快速上手</a>
                     <a href="#" data-tab="engines" class="help-tab-button block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-white hover:bg-opacity-30 transition-all duration-200">标签模式</a>
@@ -856,7 +879,7 @@
                         <ol class="list-decimal list-inside space-y-3 text-gray-700 leading-relaxed">
                             <li><strong>选择标签模式：</strong>
                                 <ul class="list-disc list-inside pl-6 mt-2 space-y-1 text-sm">
-                                    <li>在侧边栏顶部的“标签模式”下拉菜单中选择“Booru Tags (本地)”或“NL Captions (在线)”。</li>
+                                    <li>在侧边栏顶部的"标签模式"下拉菜单中选择"Booru Tags (本地)"或"NL Captions (在线)"。</li>
                                 </ul>
                             </li>
                             <li><strong>配置引擎：</strong>
@@ -869,10 +892,10 @@
                                     </li>
                                      <li><strong>若选择 NL Captions (在线)：</strong>
                                         <ul class="list-disc list-inside pl-6 mt-1 space-y-1">
-                                            <li>在“API 设置”中输入您的 API URL (完整的 API 端点，例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">https://api.openai.com/v1/chat/completions</code>)。</li>
+                                            <li>在"API 设置"中输入您的 API URL (完整的 API 端点，例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">https://api.openai.com/v1/chat/completions</code>)。</li>
                                             <li>输入您的 API Key。</li>
                                             <li>输入您希望使用的 API 模型名称 (例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">gpt-4o</code>, <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">gemini-2.5-pro-preview-05-06</code>)。默认提供 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">gemini-2.5-pro-preview-05-06</code> 作为参考。</li>
-                                            <li>填写完毕后，系统可能会尝试一次API“预热”连接。</li>
+                                            <li>填写完毕后，系统可能会尝试一次API"预热"连接。</li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -886,7 +909,7 @@
                             <li><strong>（可选）调整参数：</strong>
                                 <ul class="list-disc list-inside pl-6 mt-2 space-y-1 text-sm">
                                     <li><strong>Booru Tags:</strong> 根据需要调整模型输入尺寸、通用及角色标签阈值、添加触发词、转义括号等。</li>
-                                    <li><strong>NL Captions:</strong> （可选）在“高级输出设置”中输入“设置角色名”，以引导模型在生成描述时更关注特定角色。</li>
+                                    <li><strong>NL Captions:</strong> （可选）在"高级输出设置"中输入"设置角色名"，以引导模型在生成描述时更关注特定角色。</li>
                                 </ul>
                             </li>
                             <li><strong>开始打标：</strong> 点击"开始打标"按钮。如果NL Captions模式首次请求失败，系统会自动重试。</li>
@@ -921,7 +944,7 @@
                                             <li>API URL (必需, 完整的兼容OpenAI格式的端点)。</li>
                                             <li>API Key (必需)。</li>
                                             <li>API 模型名称 (必需, 例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">gpt-4o</code>, <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">gemini-2.5-pro-preview-05-06</code>)。</li>
-                                            <li>（可选）设置角色名：在“高级输出设置”中输入，用于引导模型在生成描述时更关注图像中的特定角色。</li>
+                                            <li>（可选）设置角色名：在"高级输出设置"中输入，用于引导模型在生成描述时更关注图像中的特定角色。</li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -947,7 +970,7 @@
                                     <li><strong>Booru Tags - 本地模型支持：</strong> 加载自定义 <code class="bg-gray-100 px-2 py-1 rounded text-purple-600">.onnx</code> 模型和 <code class="bg-gray-100 px-2 py-1 rounded text-purple-600">.csv</code> 标签文件。</li>
                                     <li><strong>Booru Tags - 浏览器本地缓存：</strong> 下载的预设模型可选择保存至浏览器，加速后续加载。</li>
                                     <li><strong>NL Captions - API参数配置：</strong> 用户可自行配置API URL、API Key和模型名称，以接入兼容OpenAI格式的任意VLM服务。相关信息保存在浏览器本地存储。</li>
-                                    <li><strong>NL Captions - API预热与重试：</strong> 当配置好API参数后，会自动尝试一次“预热”连接。在处理图像时，如果API请求失败或未返回有效内容，系统会自动重试最多2次。</li>
+                                    <li><strong>NL Captions - API预热与重试：</strong> 当配置好API参数后，会自动尝试一次"预热"连接。在处理图像时，如果API请求失败或未返回有效内容，系统会自动重试最多2次。</li>
                                 </ul>
                             </div>
                             <div>
@@ -978,11 +1001,11 @@
                             </div>
                             <div class="bg-white bg-opacity-50 rounded-xl p-4">
                                 <p class="font-semibold text-gray-800 mb-2">问：NL Captions (在线API) 请求失败或没有结果怎么办？</p>
-                                <p class="text-gray-700 text-sm">答：首先，请确保您已在“API 设置”中输入了正确的、完整的 API URL (例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">https://api.openai.com/v1/chat/completions</code>)、有效的 API Key 和正确的模型名称，确保模型拥有图像理解能力。其次，检查您的网络连接是否正常。工具已内置API预热和最多2次请求重试机制，如果多次重试后仍然失败，请查看浏览器控制台（通常按 F12 打开）是否有关于 API 请求的错误信息，这可能包含 API 返回的具体错误原因。最后，确认您使用的模型名称和 API 端点是否兼容，以及您的 API Key 是否有对应模型的访问权限和足够的配额。</p>
+                                <p class="text-gray-700 text-sm">答：首先，请确保您已在"API 设置"中输入了正确的、完整的 API URL (例如 <code class="bg-gray-100 px-1 py-0.5 rounded text-xs">https://api.openai.com/v1/chat/completions</code>)、有效的 API Key 和正确的模型名称，确保模型拥有图像理解能力。其次，检查您的网络连接是否正常。工具已内置API预热和最多2次请求重试机制，如果多次重试后仍然失败，请查看浏览器控制台（通常按 F12 打开）是否有关于 API 请求的错误信息，这可能包含 API 返回的具体错误原因。最后，确认您使用的模型名称和 API 端点是否兼容，以及您的 API Key 是否有对应模型的访问权限和足够的配额。</p>
                             </div>
                             <div class="bg-white bg-opacity-50 rounded-xl p-4">
                                 <p class="font-semibold text-gray-800 mb-2">问：生成的 Booru Tags / NL Captions 结果不理想，怎么办？</p>
-                                <p class="text-gray-700 text-sm">答：对于 Booru Tags，尝试调整阈值、更换预设模型、确保图片清晰或检查本地模型的标签文件质量。对于 NL Captions，尝试在“高级输出设置”的“设置角色名”中提供更具体或不同的引导词，或者尝试不同的API模型名称。也可以本地自行调整NL Captions的系统提示词。不同模型对不同类型的图片效果各异。</p>
+                                <p class="text-gray-700 text-sm">答：对于 Booru Tags，尝试调整阈值、更换预设模型、确保图片清晰或检查本地模型的标签文件质量。对于 NL Captions，尝试在"高级输出设置"的"设置角色名"中提供更具体或不同的引导词，或者尝试不同的API模型名称。也可以本地自行调整NL Captions的系统提示词。不同模型对不同类型的图片效果各异。</p>
                             </div>
                              <div class="bg-white bg-opacity-50 rounded-xl p-4">
                                 <p class="font-semibold text-gray-800 mb-2">问：为什么批量处理文件夹功能在本地打开HTML时可能无效？</p>
